@@ -6,6 +6,7 @@ import { Button, Container, Table, Form } from 'react-bootstrap';
 function Home() {
     let [inventory, setInventory] = useState(null);
     let [showAdd, setShowAdd] = useState(false);
+    const [error, setError] = useState('');
     let [newInventory, setNewInventory] = useState({Name: '', Description: '', Quantity: '', Price: ''});
 
     useEffect(() => {
@@ -19,8 +20,13 @@ function Home() {
     }
 
     const addInventory = async () => {
+        if (newInventory.Name !== '' && newInventory.Description !== '' && newInventory.Quantity !== '' && newInventory.Price !== '') {
         const docRef = await addDoc(collection(db, "inventory"), newInventory);
         setNewInventory({Name: '', Description: '', Quantity: '', Price: ''});
+        setError('');
+        } else {
+            setError('Please fill out all fields');
+        }
     }
 
     const editInventory = async (id) => {
@@ -44,26 +50,34 @@ function Home() {
         <Container>
             <h1>Inventory</h1>
             <Button variant="primary" onClick={() => setShowAdd(!showAdd)}> Add Item </Button>
+            <br /> <br />
+            {/* Popup error */}
+            {error && (
+                <div className="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                    <div>{error}</div>
+                    <button type="button" className="btn-close" aria-label="Close" onClick={() => setError('')}></button>
+                </div>
+            )}
             { showAdd &&
             <Form>
                 <Form.Group controlId="formName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter name" name="Name" value={newInventory.Name} onChange={handleInputChange} />
+                    <Form.Control type="text" placeholder="Enter name" name="Name" value={newInventory.Name} onChange={handleInputChange} required />
                 </Form.Group>
 
                 <Form.Group controlId="formDescription">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control type="text" placeholder="Enter description" name="Description" value={newInventory.Description} onChange={handleInputChange} />
+                    <Form.Control type="text" placeholder="Enter description" name="Description" value={newInventory.Description} onChange={handleInputChange} required />
                 </Form.Group>
 
                 <Form.Group controlId="formQuantity">
                     <Form.Label>Quantity</Form.Label>
-                    <Form.Control type="number" placeholder="Enter quantity" name="Quantity" value={newInventory.Quantity} onChange={handleInputChange} />
+                    <Form.Control type="number" placeholder="Enter quantity" name="Quantity" value={newInventory.Quantity} onChange={handleInputChange} required />
                 </Form.Group>
 
                 <Form.Group controlId="formPrice">
                     <Form.Label>Price</Form.Label>
-                    <Form.Control type="number" placeholder="Enter price" name="Price" value={newInventory.Price} onChange={handleInputChange} />
+                    <Form.Control type="number" placeholder="Enter price" name="Price" value={newInventory.Price} onChange={handleInputChange} required />
                 </Form.Group>
                 <br />
                 <Button variant="primary" onClick={addInventory}>
@@ -71,7 +85,7 @@ function Home() {
                 </Button>
             </Form>
             }
-            <br /><br />
+            <br />
             <Table striped bordered hover>
                 <thead>
                     <tr>
