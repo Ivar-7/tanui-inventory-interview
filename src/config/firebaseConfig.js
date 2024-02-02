@@ -25,4 +25,8 @@ const db = getFirestore(app);
 // const provider = new GoogleAuthProvider();
 // const analytics = getAnalytics(app);
 
+// Remove console errors
+// db.settings({ ignoreUndefinedProperties: true });
+// db.settings({ timestampsInSnapshots: true });
+
 export { db };
