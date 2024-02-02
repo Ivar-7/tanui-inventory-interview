@@ -35,6 +35,17 @@ function Home() {
         }
     }
 
+    // const editInventory = async (id) => {
+    //     if (updatedInventory.Name !== '' && updatedInventory.Description !== '' && updatedInventory.Quantity !== '' && updatedInventory.Price !== '') {
+    //         await updateDoc(collection(db, "inventory"), id, updatedInventory);
+    //         setUpdatedInventory({Name: '', Description: '', Quantity: '', Price: ''});
+    //         setEditingInventory(null);
+    //         setError('');
+    //     } else {
+    //         setError('Please fill out all fields');
+    //     }
+    // }
+
     const editInventory = async (id) => {
         const docRef = doc(db, "inventory", id);
         if (updatedInventory.Name !== '' && updatedInventory.Description !== '' && updatedInventory.Quantity !== '' && updatedInventory.Price !== '') {
