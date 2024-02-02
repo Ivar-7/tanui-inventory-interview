@@ -21,9 +21,9 @@ function Home() {
 
     const addInventory = async () => {
         if (newInventory.Name !== '' && newInventory.Description !== '' && newInventory.Quantity !== '' && newInventory.Price !== '') {
-        await addDoc(collection(db, "inventory"), newInventory);
-        setNewInventory({Name: '', Description: '', Quantity: '', Price: ''});
-        setError('');
+            await addDoc(collection(db, "inventory"), newInventory);
+            setNewInventory({Name: '', Description: '', Quantity: '', Price: ''});
+            setError('');
         } else {
             setError('Please fill out all fields');
         }
@@ -41,11 +41,13 @@ function Home() {
     }
 
     const deleteInventory = async (id) => {
-        // Add your logic to delete inventory
-        // This is just a placeholder
-        await deleteDoc(collection(db, "inventory"), id);
+        try {
+            await deleteDoc(collection(db, "inventory"), id);
+        } catch (error) {
+            console.error("Error deleting inventory:", error.message);
+        }
     }
-
+    
     return (
         <Container>
             <h1>Inventory</h1>
