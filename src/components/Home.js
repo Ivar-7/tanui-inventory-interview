@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from "../config/firebaseConfig";
-import { collection, onSnapshot, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
 import { Button, Container, Table, Form } from 'react-bootstrap';
 
 function Home() {
@@ -22,7 +22,7 @@ function Home() {
     }
 
     const handleUpdateChange = (event) => {
-        setUpdatedInventory({...newInventory, [event.target.name]: event.target.value});
+        setUpdatedInventory({...updatedInventory, [event.target.name]: event.target.value});
     }
 
     const addInventory = async () => {
@@ -35,16 +35,34 @@ function Home() {
         }
     }
 
+    // const editInventory = async (id) => {
+    //     if (updatedInventory.Name !== '' && updatedInventory.Description !== '' && updatedInventory.Quantity !== '' && updatedInventory.Price !== '') {
+    //         await updateDoc(collection(db, "inventory"), id, updatedInventory);
+    //         setUpdatedInventory({Name: '', Description: '', Quantity: '', Price: ''});
+    //         setEditingInventory(null);
+    //         setError('');
+    //     } else {
+    //         setError('Please fill out all fields');
+    //     }
+    // }
+
     const editInventory = async (id) => {
+        const docRef = doc(db, "inventory", id);
         if (updatedInventory.Name !== '' && updatedInventory.Description !== '' && updatedInventory.Quantity !== '' && updatedInventory.Price !== '') {
-            await updateDoc(collection(db, "inventory"), id, updatedInventory);
-            setUpdatedInventory({Name: '', Description: '', Quantity: '', Price: ''});
+            await updateDoc(docRef, updatedInventory);
+            setUpdatedInventory({ Name: '', Description: '', Quantity: '', Price: '' });
             setEditingInventory(null);
             setError('');
         } else {
             setError('Please fill out all fields');
         }
     }
+    
+    function handleCancel(id) {
+        setEditingInventory(null);
+        setUpdatedInventory({Name: '', Description: '', Quantity: '', Price: ''});
+    }
+    
 
     const deleteInventory = async (id) => {
         try {
@@ -143,7 +161,7 @@ function Home() {
                                 </td>
                                 <td>
                                     <Button onClick={() => editInventory(item.id)}>Update</Button>
-                                    <Button onClick={() => setEditingInventory(null)}>Cancel</Button>
+                                    <Button onClick={handleCancel}>Cancel</Button>
                                 </td>
                             </>
                         ) : (
