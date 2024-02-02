@@ -7,6 +7,8 @@ function Home() {
     let [inventory, setInventory] = useState(null);
     let [showAdd, setShowAdd] = useState(false);
     const [error, setError] = useState('');
+    let [editingInventory, setEditingInventory] = useState(null);
+    let [updatedInventory, setUpdatedInventory] = useState({Name: '', Description: '', Quantity: '', Price: ''});
     let [newInventory, setNewInventory] = useState({Name: '', Description: '', Quantity: '', Price: ''});
 
     useEffect(() => {
@@ -17,6 +19,10 @@ function Home() {
 
     const handleInputChange = (event) => {
         setNewInventory({...newInventory, [event.target.name]: event.target.value});
+    }
+
+    const handleUpdateChange = (event) => {
+        setUpdatedInventory({...newInventory, [event.target.name]: event.target.value});
     }
 
     const addInventory = async () => {
@@ -30,14 +36,14 @@ function Home() {
     }
 
     const editInventory = async (id) => {
-        // Add your logic to edit inventory
-        // This is just a placeholder
-        await updateDoc(collection(db, "inventory"), id, {
-            Name: "Updated Item",
-            Description: "Updated Description",
-            Quantity: 1,
-            Price: 1
-        });
+        if (updatedInventory.Name !== '' && updatedInventory.Description !== '' && updatedInventory.Quantity !== '' && updatedInventory.Price !== '') {
+            await updateDoc(collection(db, "inventory"), id, updatedInventory);
+            setUpdatedInventory({Name: '', Description: '', Quantity: '', Price: ''});
+            setEditingInventory(null);
+            setError('');
+        } else {
+            setError('Please fill out all fields');
+        }
     }
 
     const deleteInventory = async (id) => {
@@ -101,14 +107,59 @@ function Home() {
                 <tbody>
                     {inventory?.map((item) => (
                         <tr key={item.id}>
-                            <td>{item.Name}</td>
-                            <td>{item.Description}</td>
-                            <td>{item.Quantity}</td>
-                            <td>{item.Price}</td>
-                            <td>
-                            <Button onClick={() => editInventory(item.id)} className="me-2">Edit</Button>
-                            <Button onClick={() => deleteInventory(item.id)}>Delete</Button>
-                            </td>
+                        {editingInventory === item.id ? (
+                            <>
+                                <td>
+                                    <Form.Control
+                                        type="text"
+                                        name="Name"
+                                        value={updatedInventory.Name}
+                                        onChange={handleUpdateChange}
+                                    />
+                                </td>
+                                <td>
+                                    <Form.Control
+                                        type="text"
+                                        name="Description"
+                                        value={updatedInventory.Description}
+                                        onChange={handleUpdateChange}
+                                    />
+                                </td>
+                                <td>
+                                    <Form.Control
+                                        type="number"
+                                        name="Quantity"
+                                        value={updatedInventory.Quantity}
+                                        onChange={handleUpdateChange}
+                                    />
+                                </td>
+                                <td>
+                                    <Form.Control
+                                        type="number"
+                                        name="Price"
+                                        value={updatedInventory.Price}
+                                        onChange={handleUpdateChange}
+                                    />
+                                </td>
+                                <td>
+                                    <Button onClick={() => editInventory(item.id)}>Update</Button>
+                                    <Button onClick={() => setEditingInventory(null)}>Cancel</Button>
+                                </td>
+                            </>
+                        ) : (
+                            <>
+                                <td>{item.Name}</td>
+                                <td>{item.Description}</td>
+                                <td>{item.Quantity}</td>
+                                <td>{item.Price}</td>
+                                <td>
+                                    <Button onClick={() => setEditingInventory(item.id)} className="me-2">
+                                        Edit
+                                    </Button>
+                                    <Button onClick={() => deleteInventory(item.id)}>Delete</Button>
+                                </td>
+                            </>
+                        )}
                         </tr>
                     ))}
                 </tbody>
