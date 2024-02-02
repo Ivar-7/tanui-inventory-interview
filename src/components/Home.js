@@ -47,9 +47,14 @@ function Home() {
         }
     }
     
-    function handleCancel(id) {
+    function handleCancel() {
         setEditingInventory(null);
         setUpdatedInventory({Name: '', Description: '', Quantity: '', Price: ''});
+    }
+
+    function handleEditClick(item) {
+        setEditingInventory(item.id);
+        setUpdatedInventory({Name: item.Name, Description: item.Description, Quantity: item.Quantity, Price: item.Price});
     }
     
 
@@ -149,7 +154,7 @@ function Home() {
                                     />
                                 </td>
                                 <td>
-                                    <Button onClick={() => editInventory(item.id)}>Update</Button>
+                                    <Button onClick={() => editInventory(item.id)} className="me-2">Update</Button>
                                     <Button onClick={handleCancel}>Cancel</Button>
                                 </td>
                             </>
@@ -160,7 +165,7 @@ function Home() {
                                 <td>{item.Quantity}</td>
                                 <td>{item.Price}</td>
                                 <td>
-                                    <Button onClick={() => setEditingInventory(item.id)} className="me-2">
+                                    <Button onClick={() => handleEditClick(item)} className="me-2">
                                         Edit
                                     </Button>
                                     <Button onClick={() => deleteInventory(item.id)}>Delete</Button>
