@@ -57,10 +57,9 @@ function Home() {
         setUpdatedInventory({Name: item.Name, Description: item.Description, Quantity: item.Quantity, Price: item.Price});
     }
     
-
     const deleteInventory = async (id) => {
         try {
-            await deleteDoc(collection(db, "inventory"), id);
+            await deleteDoc(doc(db, "inventory", id));
         } catch (error) {
             console.error("Error deleting inventory:", error.message);
         }
