@@ -30,6 +30,7 @@ function Home() {
             await addDoc(collection(db, "inventory"), newInventory);
             setNewInventory({Name: '', Description: '', Quantity: '', Price: ''});
             setError('');
+            setShowAdd(false);
         } else {
             setError('Please fill out all fields');
         }
@@ -162,7 +163,7 @@ function Home() {
                                 <td>{item.Name}</td>
                                 <td>{item.Description}</td>
                                 <td>{item.Quantity}</td>
-                                <td>{item.Price}</td>
+                                <td>${item.Price}</td>
                                 <td>
                                     <Button onClick={() => handleEditClick(item)} className="me-2">
                                         Edit

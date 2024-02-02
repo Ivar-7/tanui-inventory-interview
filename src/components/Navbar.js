@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './Home';
+import About from './About';
 
 const Navbar2 = () => {
   return (
@@ -12,13 +13,13 @@ const Navbar2 = () => {
           <Link className="nav-link active" aria-current="page" to="/">Home</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="#">About</Link>
+          <Link className="nav-link" to="/about">About</Link>
         </li>
         <li className="nav-item">
           <Link className="nav-link" to="#">Contact</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link disabled" to="#">Login</Link>
+          <Link className="nav-link" to="#">Login</Link>
         </li>
       </ul>
       <form className="d-flex">
@@ -29,7 +30,7 @@ const Navbar2 = () => {
       </nav>
       <Routes>
         <Route exact path="/" element={<Home />} />
-{/*         <Route path="/about" element={<About />} /> */}
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );
