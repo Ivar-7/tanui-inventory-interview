@@ -28,7 +28,7 @@ git clone https://github.com/Ivar-7/tanui-inventory-interview.git
 2. Navigate into the project directory:
 
 ```bash
-cd inventory-management
+cd tanui-inventory-interview
 ```
 
 3. Install the project dependencies:
@@ -45,8 +45,8 @@ npm start
 
 The application will start on `http://localhost:3000`.
 
-5. Link to deployed application:
-[Inventory Management Application](https://tanui-inventory-ivar.netlify.app/)
+## Deploying
+The application in deployed using Netlify to: [Inventory Management Application](https://tanui-inventory-ivar.netlify.app/)
 
 ## Usage
 
@@ -61,5 +61,5 @@ To delete an item, click the 'Delete' button next to the item.
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
+This product is licensed by the MIT license:  [MIT](https://choosealicense.com/licenses/mit/)
 
-[MIT](https://choosealicense.com/licenses/mit/)
