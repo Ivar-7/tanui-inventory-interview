@@ -21,7 +21,7 @@ function Home() {
 
     const addInventory = async () => {
         if (newInventory.Name !== '' && newInventory.Description !== '' && newInventory.Quantity !== '' && newInventory.Price !== '') {
-        const docRef = await addDoc(collection(db, "inventory"), newInventory);
+        await addDoc(collection(db, "inventory"), newInventory);
         setNewInventory({Name: '', Description: '', Quantity: '', Price: ''});
         setError('');
         } else {
@@ -32,7 +32,7 @@ function Home() {
     const editInventory = async (id) => {
         // Add your logic to edit inventory
         // This is just a placeholder
-        const docRef = await updateDoc(collection(db, "inventory"), id, {
+        await updateDoc(collection(db, "inventory"), id, {
             Name: "Updated Item",
             Description: "Updated Description",
             Quantity: 1,
@@ -49,7 +49,7 @@ function Home() {
     return (
         <Container>
             <h1>Inventory</h1>
-            <Button variant="primary" onClick={() => setShowAdd(!showAdd)}> Add Item </Button>
+            <Button variant="primary" onClick={() => setShowAdd(!showAdd)}> {showAdd ? 'Close' : 'Add Inventory'} </Button>
             <br /> <br />
             {/* Popup error */}
             {error && (
